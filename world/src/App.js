@@ -1,13 +1,19 @@
 import { OrbitControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
-import React from 'react'
+import React, { useState } from 'react'
 import './App.css'
 
 function Box(){
+
+  const [hover, setHover] = useState(false)
+
   return(
-    <mesh>
+    <mesh
+      onPointerOver={(e) => setHover(true)}
+      onPointerOut={(e)=> setHover(false)}
+    >
       <boxBufferGeometry  attach="geometry" />
-      <meshLambertMaterial attach="material"  color="red" />
+      <meshLambertMaterial attach="material"  color={hover ? "red" : "green"} />
     </mesh>
   )
 }
