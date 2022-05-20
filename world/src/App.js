@@ -41,18 +41,21 @@ function Sphere({props}){
 }
 
 
-function Box({props}){
+function Box1({props}){
 
   const [hover, setHover] = useState(false)
   // const [strike, setStrike] = useState(false)
 
   const boxRef = useRef();
+  // const reFlow = useReflow();
 
   useFrame( ({clock}) => {
     // boxRef.current.rotation.x = Math.sin(clock.getElapsedTime());
-    boxRef.current.rotation.y = Math.sin(clock.getElapsedTime())/2;
-    boxRef.current.rotation.z = Math.sin(clock.getElapsedTime())/2;
-    // boxRef.current.scale += 0.1;
+    // boxRef.current.rotation.y = Math.sin(clock.getElapsedTime())/2;
+    // boxRef.current.rotation.z = Math.sin(clock.getElapsedTime())/2;
+    boxRef.current.scale.x = 1 + Math.sin(clock.getElapsedTime());
+    boxRef.current.scale.y = 1 + Math.sin(clock.getElapsedTime());
+    boxRef.current.scale.z = 1 + Math.sin(clock.getElapsedTime());
     // boxRef.current.position.x += 0.01;
   })
 
@@ -63,14 +66,55 @@ function Box({props}){
       rotation-x = {Math.PI *0.25}
       rotation-y = {Math.PI *0.25}
       rotation-z = {Math.PI *0.25}
-      // scale = {2}
-      position={[-1,0,0]}
+      scale = {[0.5,0.5,0.5]}
+      // position={[-1,0,0]}
       // onClick = {(e) => Box()}
       onPointerOver={(e) => setHover(true)}
       onPointerOut={(e)=> setHover(false)}
     >
       <boxBufferGeometry
-        args={[2,0.2,0.2]}
+        args={[1,1,1]}
+        attach="geometry" />
+      <meshLambertMaterial attach="material"  color={hover ? "red" : "green"} />
+    </mesh>
+  )
+}
+
+
+
+function Box2({props}){
+
+  const [hover, setHover] = useState(false)
+  // const [strike, setStrike] = useState(false)
+
+  const boxRef = useRef();
+  // const reFlow = useReflow();
+
+  useFrame( ({clock}) => {
+    // boxRef.current.rotation.x = Math.sin(clock.getElapsedTime());
+    // boxRef.current.rotation.y = Math.sin(clock.getElapsedTime())/2;
+    // boxRef.current.rotation.z = Math.sin(clock.getElapsedTime())/2;
+    boxRef.current.scale.x = 1 + Math.sin(clock.getElapsedTime());
+    boxRef.current.scale.y = 1 + Math.sin(clock.getElapsedTime());
+    boxRef.current.scale.z = 1 + Math.sin(clock.getElapsedTime());
+    // boxRef.current.position.x += 0.01;
+  })
+
+  return(
+    <mesh
+      {...props}
+      ref = {boxRef}
+      rotation-x = {Math.PI *0.25}
+      rotation-y = {Math.PI *0.25}
+      rotation-z = {Math.PI *0.25}
+      scale = {[0.5,0.5,0.5]}
+      // position={[-1,0,0]}
+      // onClick = {(e) => Box()}
+      onPointerOver={(e) => setHover(true)}
+      onPointerOut={(e)=> setHover(false)}
+    >
+      <boxBufferGeometry
+        args={[1,1,1]}
         attach="geometry" />
       <meshLambertMaterial attach="material"  color={hover ? "red" : "green"} />
       {/* <sphereBufferGeometry
@@ -89,7 +133,8 @@ function App() {
       <ambientLight intensity={0.5}/>
       {/* <directionalLight color="blue" position={[0, 0, 5]} /> */}
       <spotLight position={[10,15,10]} angle={0.3} />
-      <Box />
+      <Box1 position={[-1,0,0]} />
+      <Box2 position={[-5,5,0]} />
       <Sphere/>
     </Canvas>
   )
