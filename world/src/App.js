@@ -1,7 +1,9 @@
 import { OrbitControls, Stars } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
 import React, { useRef, useState } from 'react'
+import Navbar from './components/Navbar';
 import './App.css'
+import Text from './components/Text';
 
 
 function Sphere({props}){
@@ -127,16 +129,20 @@ function Box2({props}){
 
 function App() {
   return (
-    <Canvas>
-      <OrbitControls/>
-      <Stars/>
-      <ambientLight intensity={0.5}/>
-      {/* <directionalLight color="blue" position={[0, 0, 5]} /> */}
-      <spotLight position={[10,15,10]} angle={0.3} />
-      <Box1 position={[-1,0,0]} />
-      <Box2 position={[-5,5,0]} />
-      <Sphere/>
-    </Canvas>
+    <>
+      <Navbar/>
+      <Canvas>
+        <OrbitControls/>
+        <Stars/>
+        <Text/>
+        <ambientLight intensity={0.5}/>
+        {/* <directionalLight color="blue" position={[0, 0, 5]} /> */}
+        <spotLight position={[10,15,10]} angle={0.3} />
+        <Box1 position={[-1,0,0]} />
+        <Box2 position={[-5,5,0]} />
+        <Sphere/>
+      </Canvas>
+    </>
   )
 }
 
