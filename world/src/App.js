@@ -64,8 +64,11 @@ function AnimatedBox({props}) {
     // ref.current.position.x += temp //Math.sin(clock.getElapsedTime());
     // ref.current.position.y += temp //Math.sin(clock.getElapsedTime());
     // ref.current.position.z += temp //Math.sin(clock.getElapsedTime());
+    ref.current.position.x = temp;
+    ref.current.position.y = 0.1*(Math.sqrt(ref.current.position.x * ref.current.position.x +0.01))
+    console.log(ref.current.position.y);
 
-    state ? (ref.current.position.x +=  state ? temp : -1*temp) : (ref.current.position.y +=  state ? temp : -1*temp)
+    // state ? (ref.current.position.x +=  state ? temp : -1*temp) : (ref.current.position.y +=  state ? temp : -1*temp)
 
   })
   return (
@@ -73,7 +76,6 @@ function AnimatedBox({props}) {
     {...props}
     ref = {ref}
     scale={[0.1, 0.1, 0.1]}
-    
     >
       <boxBufferGeometry attach="geometry"  />
       <meshLambertMaterial attach="material"  color={state ? "white": "white" } />
@@ -88,23 +90,25 @@ function AnimatedText({props}) {
 
   const ref =  useRef();
   useFrame( ({clock}) => {
-    let temp =  Math.sin(clock.getElapsedTime())/50;
+    let temp = Math.cos(clock.getElapsedTime())/30;
     // ref.current.scale.x +=  state ? temp : -1*temp;
     // ref.current.scale.y +=   state ? temp : -1*temp;
     // ref.current.scale.z +=  state ? temp : -1*temp;
     // ref.current.position.x += temp //Math.sin(clock.getElapsedTime());
     // ref.current.position.y += temp //Math.sin(clock.getElapsedTime());
     // ref.current.position.z += temp //Math.sin(clock.getElapsedTime());
-
+    // ref.current.position.x = temp;
+    // ref.current.position.y = 0.1*(Math.sqrt(ref.current.position.x * ref.current.position.x +0.01))
+    // console.log(ref.current.position.y);
     state ? (ref.current.position.x +=  state ? temp : -1*temp) : (ref.current.position.y +=  state ? temp : -1*temp)
 
   })
+  extend({ TextGeometry })
   return (
     <mesh
     {...props}
     ref = {ref}
     scale={[0.1, 0.1, 0.1]}
-    
     >
       <textGeometry args={['ROY', {font, size:1, height:1}]}/>
       <meshPhysicalMaterial attach="material" color="white"/>
@@ -149,7 +153,7 @@ function Box({props}){
       <boxBufferGeometry
         args={[2,2,2]}
         attach="geometry" />
-      <meshLambertMaterial attach="material"  color={hover ? "red" : "green"} />
+      <meshLambertMaterial attach="material"  color={hover ? "red" : "white"} />
       {/* <textGeometry args={['ROY', {font, size:1, height:1}]}/>
       <meshPhysicalMaterial attach="material" color="white"/> */}
     </mesh>
@@ -172,8 +176,8 @@ function App() {
         <spotLight position={[10,15,10]} angle={0.5} />
         <Box position={[0,0,0]} />
         {/* <Sphere/> */}
-        <AnimatedBox position={[-10,0,0]}/>
-        <AnimatedText position={[10,0,0]}/>
+        <AnimatedBox position={[-100,0,0]}/>
+        <AnimatedText position={[100,0,0]}/>
       </Canvas>
     </>
   )
