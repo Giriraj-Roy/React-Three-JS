@@ -11,7 +11,7 @@ import { FontLoader } from 'three/examples/jsm/loaders/FontLoader'
 import {useInterval} from 'usehooks-ts'
 
 extend({ TextGeometry })
-
+const font = new FontLoader().parse(macondo_regular);
 
 // function Sphere({props}){
 
@@ -50,7 +50,7 @@ extend({ TextGeometry })
 // }
 
 
-function AnimatedBox() {
+function AnimatedBox({props}) {
 
   const [state, setState] = useState(true)
   useInterval(() => setState((s) => !s), 1000)
@@ -70,12 +70,44 @@ function AnimatedBox() {
   })
   return (
     <mesh
+    {...props}
     ref = {ref}
     scale={[0.1, 0.1, 0.1]}
-    position={[1,1,1]}
+    
     >
       <boxBufferGeometry attach="geometry"  />
       <meshLambertMaterial attach="material"  color={state ? "white": "white" } />
+    </mesh>
+  )
+}
+
+function AnimatedText({props}) {
+
+  const [state, setState] = useState(true)
+  useInterval(() => setState((s) => !s), 1000)
+
+  const ref =  useRef();
+  useFrame( ({clock}) => {
+    let temp =  Math.sin(clock.getElapsedTime())/50;
+    // ref.current.scale.x +=  state ? temp : -1*temp;
+    // ref.current.scale.y +=   state ? temp : -1*temp;
+    // ref.current.scale.z +=  state ? temp : -1*temp;
+    // ref.current.position.x += temp //Math.sin(clock.getElapsedTime());
+    // ref.current.position.y += temp //Math.sin(clock.getElapsedTime());
+    // ref.current.position.z += temp //Math.sin(clock.getElapsedTime());
+
+    state ? (ref.current.position.x +=  state ? temp : -1*temp) : (ref.current.position.y +=  state ? temp : -1*temp)
+
+  })
+  return (
+    <mesh
+    {...props}
+    ref = {ref}
+    scale={[0.1, 0.1, 0.1]}
+    
+    >
+      <textGeometry args={['ROY', {font, size:1, height:1}]}/>
+      <meshPhysicalMaterial attach="material" color="white"/>
     </mesh>
   )
 }
@@ -85,20 +117,21 @@ function Box({props}){
 
   const [hover, setHover] = useState(false)
   // const [strike, setStrike] = useState(false)
+  const [state, setState] = useState(true)
+  useInterval(() => setState((s) => !s), 1000)
 
   const boxRef = useRef();
   // const reFlow = useReflow();
 
   useFrame( ({clock}) => {
-    // boxRef.current.rotation.x = Math.sin(clock.getElapsedTime());
-    // boxRef.current.rotation.y = Math.sin(clock.getElapsedTime())/2;
-    // boxRef.current.rotation.z = Math.sin(clock.getElapsedTime())/2;
+    boxRef.current.rotation.x = Math.sin(clock.getElapsedTime());
+    boxRef.current.rotation.y = Math.sin(clock.getElapsedTime())/2;
+    boxRef.current.rotation.z = Math.sin(clock.getElapsedTime())/2;
     // boxRef.current.scale.x = 1 + Math.sin(clock.getElapsedTime());
     // boxRef.current.scale.y = 1 + Math.sin(clock.getElapsedTime());
     // boxRef.current.scale.z = 1 + Math.sin(clock.getElapsedTime());
-    // boxRef.current.position.x += 0.01;
+    boxRef.current.position.x += state ? 0.001: -0.001;
   })
-  // const font = new FontLoader().parse(macondo_regular)
 
   return(
     <mesh
@@ -117,56 +150,14 @@ function Box({props}){
         args={[2,2,2]}
         attach="geometry" />
       <meshLambertMaterial attach="material"  color={hover ? "red" : "green"} />
-      {/* <textGeometry args={['ROY', {font, size:1, height:1}]}/> */}
-      {/* <meshPhysicalMaterial attach="material" color="white"/> */}
+      {/* <textGeometry args={['ROY', {font, size:1, height:1}]}/>
+      <meshPhysicalMaterial attach="material" color="white"/> */}
     </mesh>
   )
 }
 
 
 
-// function Box2({props}){
-
-//   const [hover, setHover] = useState(false)
-//   // const [strike, setStrike] = useState(false)
-
-//   const boxRef = useRef();
-//   // const reFlow = useReflow();
-
-//   useFrame( ({clock}) => {
-//     // boxRef.current.rotation.x = Math.sin(clock.getElapsedTime());
-//     // boxRef.current.rotation.y = Math.sin(clock.getElapsedTime())/2;
-//     // boxRef.current.rotation.z = Math.sin(clock.getElapsedTime())/2;
-//     boxRef.current.scale.x = 1 + Math.sin(clock.getElapsedTime());
-//     boxRef.current.scale.y = 1 + Math.sin(clock.getElapsedTime());
-//     boxRef.current.scale.z = 1 + Math.sin(clock.getElapsedTime());
-//     // boxRef.current.position.x += 0.01;
-//   })
-
-//   return(
-//     <mesh
-//       {...props}
-//       ref = {boxRef}
-//       rotation-x = {Math.PI *0.25}
-//       rotation-y = {Math.PI *0.25}
-//       rotation-z = {Math.PI *0.25}
-//       scale = {[0.5,0.5,0.5]}
-//       // position={[-1,0,0]}
-//       // onClick = {(e) => Box()}
-//       onPointerOver={(e) => setHover(true)}
-//       onPointerOut={(e)=> setHover(false)}
-//     >
-//       <boxBufferGeometry
-//         args={[1,1,1]}
-//         attach="geometry" />
-//       <meshLambertMaterial attach="material"  color={hover ? "red" : "green"} />
-//       {/* <sphereBufferGeometry
-//         // args={[2,2,2]}
-//         attach="geometry" />
-//       <meshLambertMaterial attach="material"  color={hover ? "red" : "green"} /> */}
-//     </mesh>
-//   )
-// }
 
 function App() {
   return (
@@ -177,11 +168,12 @@ function App() {
         <Stars/>
         {/* <Text/> */}
         <ambientLight intensity={0.5}/>
-        {/* <directionalLight color="blue" position={[0, 0, 5]} /> */}
+        <directionalLight color="blue" position={[0, 0, 5]} />
         <spotLight position={[10,15,10]} angle={0.5} />
-        {/* <Box position={[0,0,0]} /> */}
+        <Box position={[0,0,0]} />
         {/* <Sphere/> */}
-        <AnimatedBox />
+        <AnimatedBox position={[-10,0,0]}/>
+        <AnimatedText position={[10,0,0]}/>
       </Canvas>
     </>
   )
