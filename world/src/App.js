@@ -139,12 +139,14 @@ function App() {
         {/* <Stars/> */}
         {/* <Text/> */}
         <ambientLight intensity={0.5}/>
-        <directionalLight color="blue" position={[0, 0, 5]} />
-        <spotLight position={[10,15,10]} angle={0.5} />
+        <directionalLight color="red  " position={[0, 0, 5]} />
+        <spotLight position={[1,1,1]} angle={0.1} />
         {/* <Box position={[0,0,0]} /> */}
         {/* <Sphere/> */}
         <AnimatedBox position={[-10,-10,0]}/>
         <AnimatedBox2 position={[-10,-10,0]}/>
+        <AnimatedBox position={[-100,10,0]}/>
+        <AnimatedBox2 position={[-100,10,0]}/>
         {/* <AnimatedText position={[100,0,0]}/> */}
       </Canvas>
     </>
